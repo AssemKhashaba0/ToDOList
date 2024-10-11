@@ -1,0 +1,17 @@
+﻿<div class="card shadow-lg p-4" style="border-radius: 15px; width: 100%; max-width: 400px;">
+    <div class="card-body">
+        <h2 class="card-title text-center fw-bold">Create New To-Do Item</h2>
+        <form method="post" action="/ToDoItems/Create">
+            <div class="mb-3">
+                <label for="username" class="form-label fw-bold">Your Name:</label>
+                <input type="text" class="form-control" id="username" name="username" placeholder="Enter your name">
+            </div>
+            <div class="mb-3">
+                <small class="form-text text-muted">Store it also in a cookie (1 day).</small>
+            </div>
+            <button type="submit" class="btn btn-success w-100">Create <i class="bi bi-check2-circle"></i></button>
+
+        </form>
+
+    </div>
+</div>
