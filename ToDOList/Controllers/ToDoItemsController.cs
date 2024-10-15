@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ToDOList.Data;
+using ToDOList.Models;
 
 namespace ToDOList.Controllers
 {
@@ -31,6 +33,43 @@ namespace ToDOList.Controllers
             var username = Request.Cookies["username"];
             ViewBag.Username = username;
             return View(allitem);
+
+        }
+
+        [HttpGet]
+        public IActionResult CreateNew()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult CreateNew(ToDoListEf toDOList, IFormFile fileName)
+        {
+            if (fileName.Length > 0) 
+            {
+                var FileName = Guid.NewGuid().ToString() + Path.GetExtension(fileName.FileName);
+                var filepath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot//File", FileName);
+
+                using(var stream = System.IO.File.Create(filepath))
+                {
+                    fileName.CopyTo(stream);
+                }
+                toDOList.fileName = FileName;
+            }
+            dbContext.ToDoListEfs.Add(toDOList);
+            dbContext.SaveChanges();
+            TempData["success"] = "تم اضافه المهمه بنجاح";
+            return RedirectToAction("items");
+        }
+
+        public IActionResult Delete(int id) 
+        {
+
+            ToDoListEf todolistef = new ToDoListEf() { Id = id };
+            dbContext.ToDoListEfs.Remove(todolistef);
+            dbContext.SaveChanges();   
+            
+            return RedirectToAction("items");
+
         }
 
     }
