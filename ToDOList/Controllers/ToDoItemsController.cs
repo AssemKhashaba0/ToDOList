@@ -61,6 +61,37 @@ namespace ToDOList.Controllers
             return RedirectToAction("items");
         }
 
+        [HttpGet]
+        public IActionResult Edit(int Id)
+        {
+            var item = dbContext.ToDoListEfs.Find(Id);
+            if (item != null)
+            {
+                return View(item); 
+            }
+            return RedirectToAction("items"); 
+        }
+
+        [HttpPost]
+        public IActionResult Edit(ToDoListEf toDoList)
+        {
+
+            var Item = dbContext.ToDoListEfs.Find(toDoList.Id);
+            if (Item == null)
+            {
+                return NotFound();
+            }
+
+            Item.Title = toDoList.Title;
+            Item.Description = toDoList.Description;
+            Item.Dateline = toDoList.Dateline;
+
+
+            dbContext.SaveChanges();
+
+            TempData["success"] = "تم تعديل المهمة بنجاح";
+            return RedirectToAction("items");
+        }
         public IActionResult Delete(int id) 
         {
 
